@@ -2,9 +2,8 @@
   <div class="login-container">
     <!-- 左侧介绍区域 -->
     <div class="intro-section">
-      <h1 class="intro-title">Welcome</h1>
-      <p class="intro-text">introduce</p>
-      <p class="intro-text">introduce</p>
+      <h1 class="intro-title">欢迎！</h1>
+      <p class="intro-text">本系统为fbszzzz软件包功能点展示与测试系统，登录以继续使用系统</p>
     </div>
 
     <!-- 右侧登录表单 -->
@@ -20,11 +19,7 @@
           size="large"
         >
           <el-form-item prop="username">
-            <el-input
-              v-model="loginForm.username"
-              placeholder="请输入用户名"
-              prefix-icon="User"
-            />
+            <el-input v-model="loginForm.username" placeholder="请输入用户名" prefix-icon="User" />
           </el-form-item>
 
           <el-form-item prop="password">
@@ -38,27 +33,18 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button
-              type="primary"
-              class="login-btn"
-              :loading="loading"
-              @click="handleLogin"
-            >
+            <el-button type="primary" class="login-btn" :loading="loading" @click="handleLogin">
               登录
             </el-button>
           </el-form-item>
 
           <div class="forgot-link">
-            <el-button type="primary" link @click="handleForgotPassword">
-              Forgot password?
-            </el-button>
+            <el-button type="primary" link @click="handleForgotPassword"> 忘记密码？ </el-button>
           </div>
 
           <el-divider />
 
-          <el-button class="register-btn" @click="goToRegister">
-            Create new account
-          </el-button>
+          <el-button class="register-btn" @click="goToRegister"> 创建新账号 </el-button>
         </el-form>
       </div>
     </div>
@@ -80,16 +66,12 @@ const loading = ref(false)
 
 const loginForm = reactive<LoginRequest>({
   username: '',
-  password: ''
+  password: '',
 })
 
 const loginRules: FormRules = {
-  username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' }
-  ],
-  password: [
-    { required: true, message: '请输入密码', trigger: 'blur' }
-  ]
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
 }
 
 const handleLogin = async () => {
@@ -125,7 +107,7 @@ const handleForgotPassword = () => {
     message: '请联系管理员重置密码',
     type: 'info',
     duration: 3000,
-    customClass: 'forgot-message'
+    customClass: 'forgot-message',
   })
 }
 

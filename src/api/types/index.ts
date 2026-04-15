@@ -65,6 +65,7 @@ export interface ProposalListItem {
   proposerId: number
   voteType: number // 1-单选, 2-多选
   maxChoices: number
+  winnersCount: number
   status: number // 0-草稿, 1-进行中, 2-已结束
   startTime: string
   endTime: string
@@ -80,6 +81,7 @@ export interface ProposalDetail {
     proposerId: number
     voteType: number
     maxChoices: number
+    winnersCount: number
     status: number
     startTime: string
     endTime: string
@@ -101,6 +103,7 @@ export interface CreateProposalRequest {
   description: string
   voteType: number // 1-单选, 2-多选
   maxChoices: number
+  winnersCount: number // 获胜选项数量
   options: string[]
 }
 
@@ -117,13 +120,31 @@ export interface MyVote {
   voteTime: string
 }
 
+/** 投票结果选项 */
+export interface VoteResultOption {
+  id: number
+  proposalId: number
+  optionText: string
+  optionOrder: number
+  voteCount: number
+  createdAt: string
+}
+
 /** 投票结果 */
 export interface VoteResult {
   proposal: {
     id: number
     title: string
-    totalVotes: number
+    description: string
+    proposerId: number
+    voteType: number
+    maxChoices: number
+    winnersCount: number
+    status: number
+    startTime: string
+    endTime: string | null
+    createTime: string
   }
-  results: ProposalOption[]
-  winner?: ProposalOption
+  winners: VoteResultOption[]
+  results: VoteResultOption[]
 }

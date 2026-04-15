@@ -65,6 +65,11 @@
               <el-input-number v-model="proposalForm.maxChoices" :min="2" :max="10" />
             </el-form-item>
 
+            <el-form-item prop="winnersCount" label="获胜名额数">
+              <el-input-number v-model="proposalForm.winnersCount" :min="1" :max="10" />
+              <span class="form-tip">投票结束后，票数最多的 {{ proposalForm.winnersCount }} 个选项将获胜</span>
+            </el-form-item>
+
             <el-form-item prop="options" label="投票选项">
               <div class="options-container">
                 <div
@@ -128,6 +133,7 @@ const proposalForm = reactive<ProposalFormData>({
   description: '',
   voteType: 1,
   maxChoices: 2,
+  winnersCount: 1,
   options: ['', ''],
 })
 
@@ -169,15 +175,23 @@ const handlePublish = async () => {
 
   await proposalFormRef.value.validate(async (valid) => {
     if (valid) {
+      const validOptions = proposalForm.options.filter((opt) => opt.trim() !== '')
+
+      // 验证获胜名额数必须少于投票选项数
+      if (proposalForm.winnersCount >= validOptions.length) {
+        ElMessage.error(`获胜名额数必须少于投票选项数（当前有效选项 ${validOptions.length} 个）`)
+        return
+      }
+
       publishLoading.value = true
       try {
-        const validOptions = proposalForm.options.filter((opt) => opt.trim() !== '')
         await createProposal(
           {
             title: proposalForm.title,
             description: proposalForm.description,
             voteType: proposalForm.voteType,
             maxChoices: proposalForm.voteType === 2 ? proposalForm.maxChoices : 1,
+            winnersCount: proposalForm.winnersCount,
             options: validOptions,
           },
           Number(userStore.memberId),
@@ -325,6 +339,12 @@ const handleCommand = (command: string) => {
 .add-option-btn {
   width: 100%;
   margin-top: 8px;
+}
+
+.form-tip {
+  margin-left: 12px;
+  font-size: 0.85rem;
+  color: #909399;
 }
 
 .button-group {

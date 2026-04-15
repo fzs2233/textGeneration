@@ -48,6 +48,12 @@ const router = createRouter({
       name: 'vote',
       component: () => import('@/views/Vote.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/vote/result/:id',
+      name: 'vote-result',
+      component: () => import('@/views/VoteResult.vue'),
+      meta: { requiresAuth: true }
     }
   ],
 })

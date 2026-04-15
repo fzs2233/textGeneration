@@ -196,13 +196,20 @@ const handleCommand = (command: string) => {
 
 <style scoped>
 .proposal-list-container {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
   background: linear-gradient(135deg, #e8eef5 0%, #d4e1f5 100%);
 }
 
 .main-layout {
   height: 100%;
+  width: 100%;
+}
+
+.main-layout :deep(.el-main) {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .header {
@@ -249,8 +256,8 @@ const handleCommand = (command: string) => {
 
 .main-content {
   padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .list-header {

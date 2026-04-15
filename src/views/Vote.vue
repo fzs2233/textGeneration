@@ -6,6 +6,14 @@
       <div class="proposal-info" v-loading="loading">
         <h3 class="proposal-title">{{ proposalData.title }}</h3>
         <p class="proposal-description">{{ proposalData.description }}</p>
+        <div class="proposal-tips">
+          <span v-if="proposalData.voteType === 2" class="tip-item">
+            最多可选 {{ proposalData.maxChoices }} 项
+          </span>
+          <span class="tip-item">
+            获胜名额：{{ proposalData.winnersCount }} 个
+          </span>
+        </div>
       </div>
 
       <el-form
@@ -78,6 +86,8 @@ const proposalData = reactive({
   title: '加载中...',
   description: '',
   voteType: 1,
+  maxChoices: 1,
+  winnersCount: 1,
   options: [] as ProposalOption[]
 })
 
@@ -87,6 +97,8 @@ const voteRules: FormRules = {
       validator: (rule, value, callback) => {
         if (!value || value.length === 0) {
           callback(new Error('请选择投票选项'))
+        } else if (proposalData.voteType === 2 && value.filter((id: number | undefined) => id !== undefined).length > proposalData.maxChoices) {
+          callback(new Error(`最多只能选择 ${proposalData.maxChoices} 个选项`))
         } else {
           callback()
         }
@@ -113,6 +125,8 @@ onMounted(async () => {
         proposalData.title = response.data.proposal.title
         proposalData.description = response.data.proposal.description
         proposalData.voteType = response.data.proposal.voteType
+        proposalData.maxChoices = response.data.proposal.maxChoices
+        proposalData.winnersCount = response.data.proposal.winnersCount
         proposalData.options = response.data.options
       }
     } catch (error) {
@@ -208,6 +222,20 @@ const handleCancel = () => {
   color: #666;
   line-height: 1.6;
   margin: 0;
+}
+
+.proposal-tips {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.tip-item {
+  font-size: 0.85rem;
+  color: #909399;
+  background: #e8eef5;
+  padding: 4px 12px;
+  border-radius: 4px;
 }
 
 .vote-form {
